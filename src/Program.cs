@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32.TaskScheduler;
 using System.Reflection;
 using System.Runtime.Serialization;
+using percip.io.Properties;
 
 namespace percip.io
 {
@@ -34,6 +35,7 @@ namespace percip.io
 
         static void Main(string[] args)
         {
+            if (Settings.Default.Protected) Saver = new XMLDataSaverUnprotected();
             string direction = string.Empty;
             bool query = false;
             bool raw = false;
@@ -42,6 +44,7 @@ namespace percip.io
             bool help = false;
             string inject = string.Empty;
             bool pause = false;
+            string convert = string.Empty;
 
             var configuration = CommandLineParserConfigurator
                 .Create()
@@ -53,6 +56,7 @@ namespace percip.io
                 .WithSwitch("h", () => help = true).HavingLongAlias("help").DescribedBy("Show this usage screen.")
                 .WithNamed("j", I => inject = I).HavingLongAlias("inject").DescribedBy("Time|Direction\"", "Use this for debugging only! You can inject timestamps. 1 for lock, 0 for unlock")
                 .WithPositional(d => direction = d).DescribedBy("lock", "tell me to \"lock\" for \"out\" and keep empty for \"in\"")
+                .WithNamed("c", C => convert = C).HavingLongAlias("convert").DescribedBy("FromUnprotected/FromProtected\"", "Use to Convert the XML from/into Encrypted version. Debug only!")
                 .BuildConfiguration();
             var parser = new CommandLineParser(configuration);
 
@@ -138,6 +142,28 @@ namespace percip.io
                     Console.WriteLine("Values were: {0}", inject);
 
                     Environment.Exit((int)ExitCode.OK);
+                }
+                if (!string.IsNullOrEmpty(convert))
+                {
+                    var converter = new XMLDataConverter();
+                    switch (convert)
+                    {
+                        case "FromUnprotected":
+                            if(converter.Convert<TimeStampCollection>(dbFile, Source.FromUnprotected))
+                            {
+                                Settings.Default.Protected = true;
+                            }
+                            break;
+                        case "FromProtected":
+                            if(converter.Convert<TimeStampCollection>(dbFile, Source.FromProtected))
+                            {
+                                Settings.Default.Protected = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    Settings.Default.Save();
                 }
 
                 if (raw)
@@ -571,9 +597,9 @@ task. Open an elevated command prompt.
             try
             {
                 if (dtOut == DateTime.MinValue)
-                    Console.WriteLine("{0:yyyy-MM-dd ddd}\t {1:HH\\:mm} in and till now ({2:HH\\:mm}) {3:hh\\:mm} h of work", dtIn.Date, dtIn, DateTime.Now, breaked(DateTime.Now,dtIn));
+                    Console.WriteLine("{0:yyyy-MM-dd ddd}\t {1:HH\\:mm} in and till now ({2:HH\\:mm}) {3:hh\\:mm} h of work", dtIn.Date, dtIn, DateTime.Now, breaked(DateTime.Now, dtIn));
                 else
-                    Console.WriteLine("{0:yyyy-MM-dd ddd}\t {1:HH\\:mm} in and {2:HH\\:mm} out. {3:hh\\:mm} h of work", dtIn.Date, dtIn, dtOut, breaked(dtOut,dtIn));
+                    Console.WriteLine("{0:yyyy-MM-dd ddd}\t {1:HH\\:mm} in and {2:HH\\:mm} out. {3:hh\\:mm} h of work", dtIn.Date, dtIn, dtOut, breaked(dtOut, dtIn));
             }
             catch (FormatException)
             {
