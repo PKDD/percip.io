@@ -170,6 +170,7 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="TimeStamps.cs" />
+    <Compile Include="XMLDataConverter.cs" />
     <Compile Include="XMLDataSaver.cs" />
     <Compile Include="XMLDataSaverUnprotected.cs" />
   </ItemGroup>

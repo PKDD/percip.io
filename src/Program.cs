@@ -39,6 +39,7 @@ namespace percip.io
 
         static void Main(string[] args)
         {
+            if (Settings.Default.Protected) Saver = new XMLDataSaverUnprotected();
             string direction = string.Empty;
             bool query = false;
             bool raw = false;
@@ -51,6 +52,7 @@ namespace percip.io
             string timeSpan = string.Empty;
             bool pause = false;
             bool ConversionNeeded = false;
+            string convert = string.Empty;
 
             var configuration = CommandLineParserConfigurator
                 .Create()
@@ -65,6 +67,7 @@ namespace percip.io
                 .WithNamed("t", t => tags = t).HavingLongAlias("tags").DescribedBy("timestamp|Tag1,Tag2,...\"", "Tag a timestamp; use ticks for the timestamp (-r shows them)")
                 .WithPositional(d => direction = d).DescribedBy("lock", "tell me to \"lock\" for \"out\" and keep empty for \"in\"")
                 .WithSwitch("renew", () => ConversionNeeded = true).DescribedBy("Use this option if you want your XML updated to your program version.")
+                .WithNamed("c", C => convert = C).HavingLongAlias("convert").DescribedBy("FromUnprotected/FromProtected\"", "Use to Convert the XML from/into Encrypted version. Debug only!")
                 .BuildConfiguration();
             var parser = new CommandLineParser(configuration);
 
@@ -157,6 +160,28 @@ namespace percip.io
                     Console.WriteLine("Values were: {0}", inject);
 
                     Environment.Exit((int)ExitCode.OK);
+                }
+                if (!string.IsNullOrEmpty(convert))
+                {
+                    var converter = new XMLDataConverter();
+                    switch (convert)
+                    {
+                        case "FromUnprotected":
+                            if(converter.Convert<TimeStampCollection>(dbFile, Source.FromUnprotected))
+                            {
+                                Settings.Default.Protected = true;
+                            }
+                            break;
+                        case "FromProtected":
+                            if(converter.Convert<TimeStampCollection>(dbFile, Source.FromProtected))
+                            {
+                                Settings.Default.Protected = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    Settings.Default.Save();
                 }
 
                 if (raw)
