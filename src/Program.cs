@@ -293,7 +293,7 @@ Here are your times:
             Console.Write("\nWhich ist the begin of your break?[1-10] ");
             try
             {
-                int answer = Convert.ToInt32(Console.ReadLine());
+                int answer = System.Convert.ToInt32(Console.ReadLine());
                 if (answer == 11)
                 {
                     interactivebreaktime(offset + 10);
@@ -340,7 +340,7 @@ Here are your times:
                 }
             }
             Console.Write("\nPlease choose:[1-15] ");
-            int answer = Convert.ToInt32(Console.ReadLine());
+            int answer = System.Convert.ToInt32(Console.ReadLine());
             int end = start + answer;
             TimeStamp endStamp = col.TimeStamps[end];
             if (endStamp.Direction != Direction.In) throw new DirectionException();
