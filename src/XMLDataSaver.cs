@@ -12,14 +12,14 @@ namespace percip.io
     class XMLDataSaver : IDataSaver
     {
         /// <summary>
-        /// 
+        /// Decrypting an object with given Key and from xml-file in filename.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filename"></param>
-        /// <param name="encryptionKey"></param>
-        /// <returns></returns>
-        /// <exception cref="FileNotFoundException"></exception>
-        /// <exception cref="Exception"></exception>
+        /// <typeparam name="T">Type of the object.</typeparam>
+        /// <param name="filename">Path to the xml-file.</param>
+        /// <param name="encryptionKey">Key for the decryption.</param>
+        /// <returns>Object of type T</returns>
+        /// <exception cref="FileNotFoundException">Thrown if file from filename is non-existent.</exception>
+        /// <exception cref="Exception">Thrown while decryption and file opening.</exception>
         private T DecryptAndDeserialize<T>(string filename, string encryptionKey)
         {
             var key = new DESCryptoServiceProvider();
@@ -48,13 +48,13 @@ namespace percip.io
         }
 
         /// <summary>
-        /// 
+        /// Encrypts given object with encryption key into xml-file
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filename"></param>
-        /// <param name="obj"></param>
-        /// <param name="encryptionKey"></param>
-        /// <exception cref="Exception"></exception>
+        /// <typeparam name="T">Type of the Object.</typeparam>
+        /// <param name="filename">Path to the xml-file.</param>
+        /// <param name="obj">The object to encrypt.</param>
+        /// <param name="encryptionKey">The key used for encryption.</param>
+        /// <exception cref="Exception">Thrown if encryption, serialisation or saving is not working.</exception>
         private void EncryptAndSerialize<T>(string filename, T obj, string encryptionKey)
         {
             var key = new DESCryptoServiceProvider();
@@ -78,6 +78,10 @@ namespace percip.io
             }
         }
 
+        /// <summary>
+        /// Providing a user and domain specific key.
+        /// </summary>
+        /// <returns>String with encryption key.</returns>
         private string GetKey()
         {
             string sMyKey = Environment.UserName + "@" + Environment.UserDomainName;
