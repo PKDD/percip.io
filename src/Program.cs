@@ -145,25 +145,7 @@ namespace percip.io
                 }
                 if (!string.IsNullOrEmpty(convert))
                 {
-                    var converter = new XMLDataConverter();
-                    switch (convert)
-                    {
-                        case "FromUnprotected":
-                            if(converter.Convert<TimeStampCollection>(dbFile, Source.FromUnprotected))
-                            {
-                                Settings.Default.Protected = true;
-                            }
-                            break;
-                        case "FromProtected":
-                            if(converter.Convert<TimeStampCollection>(dbFile, Source.FromProtected))
-                            {
-                                Settings.Default.Protected = false;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    Settings.Default.Save();
+                    Convert(convert);
                 }
 
                 if (raw)
@@ -184,6 +166,58 @@ namespace percip.io
                     LogTimeStamp(direction);
                 else
                     QueryWorkingTimes();
+            }
+        }
+
+        private static void Convert(string convert)
+        {
+            try
+            {
+                Enum.Parse(typeof(Source), convert);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fehler: {0}", ex);
+                Environment.Exit(-2);
+            }
+        }
+
+        private static void Convert(Source convert)
+        {
+            var converter = new XMLDataConverter();
+            switch (convert)
+            {
+                case Source.FromUnprotected:
+                    if (converter.Convert<TimeStampCollection>(dbFile, Source.FromUnprotected))
+                    {
+                        Settings.Default.Protected = true;
+                    }
+                    break;
+                case Source.FromProtected:
+                    if (converter.Convert<TimeStampCollection>(dbFile, Source.FromProtected))
+                    {
+                        Settings.Default.Protected = false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            Settings.Default.Save();
+        }
+
+        private static void generatereport(string filename)
+        {
+            XslCompiledTransform xslt = new XslCompiledTransform();
+            xslt.Load(XmlReader.Create(new StringReader(Resources.main)));
+            bool prot = Settings.Default.Protected;
+            if (prot)
+            {
+                Convert(Source.FromProtected);
+            }
+            xslt.Transform(dbFile, filename + ".html");
+            if (prot)
+            {
+                Convert(Source.FromUnprotected);
             }
         }
 
