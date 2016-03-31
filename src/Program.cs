@@ -11,6 +11,8 @@ using Microsoft.Win32.TaskScheduler;
 using System.Reflection;
 using System.Runtime.Serialization;
 using percip.io.Properties;
+using System.Xml.Xsl;
+using System.Xml;
 
 namespace percip.io
 {
@@ -29,7 +31,8 @@ namespace percip.io
     }
     public class Program
     {
-        private static string dbFile = Environment.CurrentDirectory + "\\times.db";
+        private static string filename = "times";
+        private static string dbFile = Environment.CurrentDirectory + "\\" + filename + ".db";
         private static string taskPrefix = "__percip.io__";
         private static IDataSaver Saver = new XMLDataSaver();
 
@@ -45,6 +48,7 @@ namespace percip.io
             string inject = string.Empty;
             bool pause = false;
             string convert = string.Empty;
+            bool report = false;
 
             var configuration = CommandLineParserConfigurator
                 .Create()
@@ -53,6 +57,7 @@ namespace percip.io
                 .WithSwitch("i", () => init = true).HavingLongAlias("init").DescribedBy("Create windows tasks (you need elevated permissions for this one!")
                 .WithSwitch("d", () => deInit = true).HavingLongAlias("deinit").DescribedBy("Remove windows tasks (you need elevated permissions for this one!")
                 .WithSwitch("b", () => pause = true).HavingLongAlias("pause").DescribedBy("Manage your breaks")
+                .WithSwitch("R", () => report = true).HavingLongAlias("report").DescribedBy("Generate report html")
                 .WithSwitch("h", () => help = true).HavingLongAlias("help").DescribedBy("Show this usage screen.")
                 .WithNamed("j", I => inject = I).HavingLongAlias("inject").DescribedBy("Time|Direction\"", "Use this for debugging only! You can inject timestamps. 1 for lock, 0 for unlock")
                 .WithPositional(d => direction = d).DescribedBy("lock", "tell me to \"lock\" for \"out\" and keep empty for \"in\"")
@@ -130,7 +135,7 @@ namespace percip.io
                     string[] injection = inject.Split('|');
                     stamp.Stamp = DateTime.Parse(injection[0]);
                     if (injection.Length > 1)
-                        stamp.Direction = (Direction)(Convert.ToInt32(injection[1]));
+                        stamp.Direction = (Direction)(System.Convert.ToInt32(injection[1]));
                     if (injection.Length > 2)
                         stamp.User = injection[2];
 
@@ -161,6 +166,11 @@ namespace percip.io
                 if (pause)
                 {
                     interactivebreaktime(0);
+                }
+                if (report)
+                {
+                    generatereport(filename);
+                    Environment.Exit(0);
                 }
                 if (!query)
                     LogTimeStamp(direction);
