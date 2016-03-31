@@ -34,5 +34,14 @@ namespace percip.io.Properties {
                 this["Protected"] = value;
             }
         }
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string lastenergysave {
+            get {
+                return ((string)(this["lastenergysave"]));
+            }
+            set {
+                this["lastenergysave"] = value;
+            }
+        }
     }
 }
