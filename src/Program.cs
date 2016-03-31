@@ -224,7 +224,7 @@ namespace percip.io
             {
                 Convert(Source.FromProtected);
             }
-            xslt.Transform(dbFile, filename + ".html");
+            xslt.Transform(dbFile, ".\\report\\" + filename + ".html");
             if (prot)
             {
                 Convert(Source.FromUnprotected);

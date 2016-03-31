@@ -61,26 +61,22 @@ namespace percip.io.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&apos;1.0&apos;?&gt;
         ///&lt;xsl:stylesheet version=&quot;1.0&quot;
-        ///xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
-        ///&lt;xsl:template match=&quot;/&quot;&gt;
-        ///  &lt;html&gt;
-        ///  &lt;body&gt;
-        ///  &lt;h2&gt;Time report&lt;/h2&gt;
-        ///  &lt;table border=&quot;1&quot;&gt;
-        ///    &lt;tr bgcolor=&quot;#9acd32&quot;&gt;
-        ///      &lt;th&gt;Stamp&lt;/th&gt;
-        ///      &lt;th&gt;User&lt;/th&gt;
-        ///      &lt;th&gt;Direction&lt;/th&gt;
-        ///    &lt;/tr&gt;
-        ///
-        ///    &lt;xsl:for-each select=&quot;TimeStampCollection/TimeStamps/TimeStamp&quot;&gt;
-        ///    &lt;tr&gt;
-        ///
-        ///      &lt;xsl:variable name=&quot;d&quot; select=&quot;Stamp&quot; as=&quot;xs:dateTime&quot;/&gt;
-        ///      &lt;td&gt;
-        ///        &lt;xsl:value-of select=&quot; [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///      xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
+        ///      xmlns:ms=&quot;urn:schemas-microsoft-com:xslt&quot;
+        ///      xmlns:dt=&quot;urn:schemas-microsoft-com:datatypes&quot;&gt;
+        ///  &lt;xsl:template match=&quot;/&quot;&gt;
+        ///    &lt;html&gt;
+        ///      &lt;body&gt;
+        ///        &lt;script src=&quot;sorttable.js&quot;&gt;&lt;/script&gt;
+        ///        &lt;h2&gt;Time report&lt;/h2&gt;
+        ///        &lt;table border=&quot;1&quot; class=&quot;sortable&quot;&gt;
+        ///          &lt;tr bgcolor=&quot;#9acd32&quot;&gt;
+        ///            &lt;th&gt;Stamp&lt;/th&gt;
+        ///            &lt;th&gt;User&lt;/th&gt;
+        ///            &lt;th&gt;Direction&lt;/th&gt;
+        ///   [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string main {
             get {
