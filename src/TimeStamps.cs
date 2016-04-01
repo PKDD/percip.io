@@ -9,12 +9,40 @@ namespace percip.io
     public class TimeStampCollection
     {
         private List<TimeStamp> stamps = new List<TimeStamp>();
+        private List<Day> days = new List<Day>();
         private TimeSpan workingTimeSpan = new TimeSpan(0);
 
         public List<TimeStamp> TimeStamps
         {
             get { return stamps; }
-            set { stamps = value; }
+            set
+            {
+                stamps = value;
+                generateDays();
+            }
+        }
+
+        private void generateDays()
+        {
+            stamps.ForEach((stamp) =>
+            {
+                var date = stamp.Stamp.Date;
+                Day working = days.Find((x) => x.Date == date);
+                if (working == default(Day))
+                {
+                    working = new Day(date);
+                }
+                if (!working.TimeStamps.Contains(stamp))
+                {
+                    working.TimeStamps.Add(stamp);
+                }
+            });
+
+        }
+
+        public List<Day> Days
+        {
+            get { return days; }
         }
 
         public TimeSpan WorkingTime
@@ -83,7 +111,27 @@ namespace percip.io
             }
             return ret;
         }
+
+        public class Day
+        {
+            private DateTime date;
+            private List<TimeStamp> stamps;
+            public DateTime Date
+            {
+                get { return date; }
+            }
+
+            public List<TimeStamp> TimeStamps
+            {
+                get { return stamps; }
+            }
+            public Day(DateTime Date) { date = Date; }
+
+        }
     }
+
+
+
     public class TimeStamp : IComparable<TimeStamp>
     {
         private DateTime timeStamp;
