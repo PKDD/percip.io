@@ -4,19 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Microsoft.Win32.TaskScheduler;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 using percip.io.Properties;
 using System.Xml.Xsl;
 using System.Xml;
-using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
-using percip.io.Properties;
 
 namespace percip.io
 {
