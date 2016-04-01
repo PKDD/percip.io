@@ -6,7 +6,10 @@
   <xsl:template match="/">
     <html>
       <head>
+        <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
+        <script src="jquery.filtertable.min.js"></script>
         <script src="sorttable.js"></script>
+        <script src="main.js"></script>
         <link rel="stylesheet" type="text/css" href="main.css"/>
       </head>
       <body>
