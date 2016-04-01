@@ -1,6 +1,26 @@
 table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
     content: " \25B4\25BE"
 }
+/* Appearance */
+    body, table { font-family: sans-serif; }
+    table { border-collapse: collapse; }
+    td, th { padding: 6px; }
+    th { background: #333; color: white; }
+    .striped { background: #dfdfdf; }
+    table { border: 1px solid red; }
+/* Scrollability of table */
+    table { width: 900px; } /* fixed width table */
+    thead tr { display: block; } /* makes it sizeable */
+    tbody {
+      display: block; /* makes it sizeable */
+      height: 400px; /* height of scrollable area */
+      overflow: auto; /* scroll rather than overflow */
+      width: 100%; /* fill the box */
+    }
+    thead th { width: 300px; } /* fixed width for THs */
+    tbody td { width: 292px; } /* fixed width for TDs */
+    /* the tbody needs to be 16px less than the thead, for the scrollbar */
+
     /* Filtertable example style*/
 .filter-table .quick { margin-left: 0.5em; font-size: 0.8em; text-decoration: none; }
 .fitler-table .quick:hover { text-decoration: underline; }
