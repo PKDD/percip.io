@@ -32,7 +32,7 @@ namespace percip.io
                 {
                     working = new Day(date);
                 }
-                if (!working.TimeStamps.Contains(stamp))
+                if (!working.Stamps.Contains(stamp))
                 {
                     working.TimeStamps.Add(stamp);
                 }
@@ -112,7 +112,7 @@ namespace percip.io
             return ret;
         }
 
-        public class Day
+        public struct Day
         {
             private DateTime date;
             private List<TimeStamp> stamps;
@@ -125,8 +125,31 @@ namespace percip.io
             {
                 get { return stamps; }
             }
-            public Day(DateTime Date) { date = Date; }
-
+            internal List<TimeStamp> Stamps
+            {
+                get { return stamps; }
+                set { stamps = value; }
+            }
+            public Day(DateTime Date) { date = Date;
+                stamps = new List<TimeStamp>();
+            }
+            //public Day() { }
+            public static bool operator == (Day d1, Day d2)
+            {
+                if (d1.date == d2.date && d1.stamps == d2.stamps)
+                {
+                    return true;
+                }
+                return false;
+            }
+            public static bool operator != (Day d1, Day d2)
+            {
+                if (d1.date == d2.date && d1.stamps == d2.stamps)
+                {
+                    return false;
+                }
+                return true;
+            }
         }
     }
 
