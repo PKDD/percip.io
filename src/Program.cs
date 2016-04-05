@@ -256,11 +256,16 @@ Here are your times:
             catch (DirectionException)
             {
                 Console.Write("You chose an illegal time. Please retry!");
+                Console.ReadLine();
                 interactivebreaktime(offset);
             }
+
+#pragma warning disable CS0168 // Variable ist deklariert, wird jedoch niemals verwendet
             catch (Exception ex)
+#pragma warning restore CS0168 // Variable ist deklariert, wird jedoch niemals verwendet
             {
                 Console.Write("There is some Problem with you answer. Please retry!");
+                Console.ReadLine();
                 interactivebreaktime(offset);
             }
 
@@ -293,7 +298,7 @@ Here are your times:
             {
                 do
                 {
-                    col.TimeStamps[start++].Direction = Direction.BR;
+                    col.TimeStamps[start++].Tags.Add("BR");
                 } while (start <= end);
             }
             else interactivebreaktime(0);
@@ -659,7 +664,7 @@ task. Open an elevated command prompt.
                 {
                     first = range[i];
                     second = range[i + 1];
-                    if (first.Direction == Direction.BR && second.Direction == Direction.BR)
+                    if (first.Tags.Contains("BR") && second.Tags.Contains("BR"))
                     {
                         result -= second.Stamp - first.Stamp;
                     }
