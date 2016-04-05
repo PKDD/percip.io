@@ -16,7 +16,7 @@ if(mm<10) {
 
 today = dd+'.'+mm+'.'+yyyy;
 	$('table').filterTable({
-		quickList:[today],
+		quickList:[today, 'In', 'Out'],
     callback: function(term, table) {
         table.find('tr').removeClass('striped').filter(':visible:even').addClass('striped');
     }
