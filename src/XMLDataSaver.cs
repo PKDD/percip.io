@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace percip.io
@@ -102,6 +103,35 @@ namespace percip.io
         public void Save<T>(string filename, T obj)
         {
             EncryptAndSerialize<T>(filename, obj, GetKey());
+        }
+
+        public void GetVersion<T>(string filename)
+        {
+            var encryptionKey = GetKey(); 
+            var key = new DESCryptoServiceProvider();
+            int length = encryptionKey.Length / 2;
+            byte[] k = Encoding.ASCII.GetBytes(encryptionKey.Substring(0, length));
+            byte[] iV = Encoding.ASCII.GetBytes(encryptionKey.Substring(length));
+            var d = key.CreateDecryptor(k, iV);
+            try
+            {
+                using (var fs = File.Open(filename, FileMode.Open))
+                {
+                    using (var cs = new CryptoStream(fs, d, CryptoStreamMode.Read))
+                    {
+                        var xml = XmlReader.Create(cs);
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw new FileNotFoundException("{0} could not be found", filename);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
     }
 }

@@ -10,6 +10,11 @@ namespace percip.io
 {
     class XMLDataSaverUnprotected : IDataSaver
     {
+        public void GetVersion<T>(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
         public T Load<T>(string filename)
         {
             try
