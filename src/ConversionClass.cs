@@ -12,6 +12,12 @@ namespace percip.io
         {
             T obj = ToRepair.Load<T>(filename);
 
+            if (typeof(T) == typeof(TimeStampCollection))
+            {
+                TimeStampCollection col = obj as TimeStampCollection;
+
+            }
+
             ToRepair.Save(filename, obj);
         }
     }
