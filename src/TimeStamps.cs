@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace percip.io
 {
     public class TimeStampCollection
     {
+
+        int Major = (new AssemblyName()).Version.Major;
+        int Minor = (new AssemblyName()).Version.Minor;
+
         private List<TimeStamp> stamps = new List<TimeStamp>();
         private TimeSpan workingTimeSpan = new TimeSpan(0);
 
@@ -128,7 +133,6 @@ namespace percip.io
     public enum Direction
     {
         In,
-        Out,
-        BR
+        Out
     }
 }
