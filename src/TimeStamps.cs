@@ -4,14 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using percip.io_1_0_4;
 
 namespace percip.io
 {
     public class TimeStampCollection
     {
 
-        int Major = (new AssemblyName()).Version.Major;
-        int Minor = (new AssemblyName()).Version.Minor;
+        Version version = (new AssemblyName()).Version;
+        
 
         private List<TimeStamp> stamps = new List<TimeStamp>();
         private TimeSpan workingTimeSpan = new TimeSpan(0);
@@ -66,6 +67,15 @@ namespace percip.io
             sbOut.AppendFormat("Total hours over working time: {0:hh\\:mm}.", globalWorkingTime);
 
             return sbOut.ToString();
+        }
+
+        internal static TimeStampCollection Convert(io_1_0_4.TimeStampCollection col_1_0_4)
+        {
+            return new TimeStampCollection()
+            {
+                TimeStamps = col_1_0_4.TimeStamps.ConvertAll<TimeStamp>((stamp) => { return TimeStamp.Convert(stamp); }),
+                WorkingTime = col_1_0_4.WorkingTime,
+            };
         }
 
         private TimeSpan AddTimeString(ref StringBuilder sb, DateTime dtIn, DateTime dtOut)
@@ -129,7 +139,30 @@ namespace percip.io
             else
                 return this.Stamp.CompareTo(other.Stamp);
         }
-    }
+
+    internal static TimeStamp Convert(percip.io_1_0_4.TimeStamp stamp)
+    {
+            var back = new TimeStamp();
+            switch (stamp.Direction)
+            {
+                case io_1_0_4.Direction.In:
+                    back.Direction = Direction.In;
+                    break;
+                case io_1_0_4.Direction.Out:
+                    back.Direction = Direction.Out;
+                    break;
+                case io_1_0_4.Direction.BR:
+                    back.Tags.Add("BR");
+                    break;
+                default:
+                    break;
+            }
+            back.Tags.AddRange(stamp.Tags);
+            back.Stamp = stamp.Stamp;
+            back.User = stamp.User;
+            return back;
+        }
+}
     public enum Direction
     {
         In,
