@@ -50,6 +50,7 @@ namespace percip.io
             string tags = string.Empty;
             string timeSpan = string.Empty;
             bool pause = false;
+            bool ConversionNeeded = false;
 
             var configuration = CommandLineParserConfigurator
                 .Create()
@@ -63,6 +64,7 @@ namespace percip.io
                 .WithNamed("j", I => inject = I).HavingLongAlias("inject").DescribedBy("Time|Direction\"", "Use this for debugging only! You can inject timestamps. 1 for lock, 0 for unlock")
                 .WithNamed("t", t => tags = t).HavingLongAlias("tags").DescribedBy("timestamp|Tag1,Tag2,...\"", "Tag a timestamp; use ticks for the timestamp (-r shows them)")
                 .WithPositional(d => direction = d).DescribedBy("lock", "tell me to \"lock\" for \"out\" and keep empty for \"in\"")
+                .WithSwitch("renew", () => ConversionNeeded = true).DescribedBy("Use this option if you want your XML updated to your program version.")
                 .BuildConfiguration();
             var parser = new CommandLineParser(configuration);
 
@@ -75,6 +77,12 @@ namespace percip.io
             }
             else
             {
+                if (ConversionNeeded)
+                {
+                    var converter = new ConversionClass();
+                    converter.RenewData<TimeStampCollection>(Saver, dbFile);
+                    Environment.Exit(0);
+                }
                 if (help)
                 {
                     ShowUsage(configuration);
