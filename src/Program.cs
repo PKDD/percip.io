@@ -39,7 +39,7 @@ namespace percip.io
 
         static void Main(string[] args)
         {
-            if (Settings.Default.Protected) Saver = new XMLDataSaverUnprotected();
+            if (!Settings.Default.Protected) Saver = new XMLDataSaverUnprotected();
             string direction = string.Empty;
             bool query = false;
             bool raw = false;
