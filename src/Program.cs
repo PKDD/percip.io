@@ -262,22 +262,6 @@ namespace percip.io
             Settings.Default.Save();
         }
 
-        private static void generatereport(string filename)
-        {
-            XslCompiledTransform xslt = new XslCompiledTransform();
-            xslt.Load(XmlReader.Create(new StringReader(Resources.main)));
-            bool prot = Settings.Default.Protected;
-            if (prot)
-            {
-                Convert(Source.FromProtected);
-            }
-            xslt.Transform(dbFile, filename + ".html");
-            if (prot)
-            {
-                Convert(Source.FromUnprotected);
-            }
-        }
-
         private static void interactivebreaktime(int offset)
         {
             Console.Clear();
