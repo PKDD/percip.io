@@ -41,6 +41,10 @@ namespace percip.io
             return true;
         }
 
+        public void GetVersion<T>(string filename)
+        {
+            ((IDataSaver)Unprotected).GetVersion<T>(filename);
+        }
     }
 
     public enum Source
