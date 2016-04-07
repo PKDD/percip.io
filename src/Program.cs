@@ -147,7 +147,7 @@ namespace percip.io
                     string[] injection = inject.Split('|');
                     stamp.Stamp = DateTime.Parse(injection[0]);
                     if (injection.Length > 1)
-                        stamp.Direction = (Direction)(Convert.ToInt32(injection[1]));
+                        stamp.Direction = (Direction)(System.Convert.ToInt32(injection[1]));
                     if (injection.Length > 2)
                         stamp.User = injection[2];
 
