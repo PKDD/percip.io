@@ -38,6 +38,11 @@ namespace percip.io
                     }
                 }
             }
+            catch (InvalidOperationException)
+            {
+                ConversionClass.RenewData<T>(this, filename);
+                return DecryptAndDeserialize<T>(filename, encryptionKey);
+            }
             catch (FileNotFoundException)
             {
                 throw new FileNotFoundException("{0} could not be found", filename);
