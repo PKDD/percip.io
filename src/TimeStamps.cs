@@ -11,9 +11,7 @@ namespace percip.io
     public class TimeStampCollection
     {
 
-        Version version = (new AssemblyName()).Version;
-        
-
+        public string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         private List<TimeStamp> stamps = new List<TimeStamp>();
         private TimeSpan workingTimeSpan = new TimeSpan(0);
 
@@ -74,7 +72,7 @@ namespace percip.io
             return new TimeStampCollection()
             {
                 TimeStamps = col_1_0_4.TimeStamps.ConvertAll<TimeStamp>((stamp) => { return TimeStamp.Convert(stamp); }),
-                WorkingTime = col_1_0_4.WorkingTime,
+                WorkingTime = col_1_0_4.WorkingTime
             };
         }
 
