@@ -82,8 +82,7 @@ namespace percip.io
             {
                 if (ConversionNeeded)
                 {
-                    var converter = new ConversionClass();
-                    converter.RenewData<TimeStampCollection>(Saver, dbFile);
+                    ConversionClass.RenewData<TimeStampCollection>(Saver, dbFile);
                     Environment.Exit(0);
                 }
                 if (help)

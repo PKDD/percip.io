@@ -8,7 +8,7 @@ namespace percip.io
 {
     class ConversionClass
     {
-        public void RenewData<T>(IDataSaver ToRepair, string filename)
+        public static void RenewData<T>(IDataSaver ToRepair, string filename)
         {
 
             if (typeof(T) == typeof(TimeStampCollection))
