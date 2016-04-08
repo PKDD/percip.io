@@ -4,15 +4,34 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace percip.io
 {
     class XMLDataSaverUnprotected : IDataSaver
     {
-        public void GetVersion<T>(string filename)
+        public string GetVersion<T>(string filename)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var fs = File.Open(filename, FileMode.Open))
+                {
+                    var xml = XmlReader.Create(fs);
+                    xml.ReadToFollowing("version");
+                    return xml.ReadElementContentAsString();
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine(new FileNotFoundException("{0} could not be found", filename));
+                Environment.Exit(-1);
+                return default(string);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public T Load<T>(string filename)
@@ -23,6 +42,11 @@ namespace percip.io
                 {
                     return (T)(new XmlSerializer(typeof(T))).Deserialize(fs);
                 }
+            }
+            catch (InvalidOperationException)
+            {
+                ConversionClass.RenewData<T>(this, filename);
+                return Load<T>(filename);
             }
             catch (FileNotFoundException)
             {
