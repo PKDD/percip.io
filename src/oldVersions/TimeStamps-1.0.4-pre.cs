@@ -150,6 +150,18 @@ namespace percip.io_1_0_4
                 }
                 return true;
             }
+            public override bool Equals(object obj)
+            {
+                if (typeof(object) == typeof(Day))
+                {
+                    return this == (Day)obj;
+                }
+                return false;
+            }
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
     }
 
