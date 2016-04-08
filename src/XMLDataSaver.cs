@@ -110,7 +110,7 @@ namespace percip.io
             EncryptAndSerialize<T>(filename, obj, GetKey());
         }
 
-        public void GetVersion<T>(string filename)
+        public string GetVersion<T>(string filename)
         {
             var encryptionKey = GetKey(); 
             var key = new DESCryptoServiceProvider();
@@ -125,12 +125,16 @@ namespace percip.io
                     using (var cs = new CryptoStream(fs, d, CryptoStreamMode.Read))
                     {
                         var xml = XmlReader.Create(cs);
+                        xml.ReadToFollowing("version");
+                        return xml.ReadContentAsString();
                     }
                 }
             }
             catch (FileNotFoundException)
             {
-                throw new FileNotFoundException("{0} could not be found", filename);
+                Console.WriteLine(new FileNotFoundException("{0} could not be found", filename));
+                Environment.Exit(-1);
+                return default(string);
             }
             catch (Exception ex)
             {
