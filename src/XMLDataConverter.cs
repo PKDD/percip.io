@@ -41,9 +41,9 @@ namespace percip.io
             return true;
         }
 
-        public void GetVersion<T>(string filename)
+        public string GetVersion<T>(string filename)
         {
-            ((IDataSaver)Unprotected).GetVersion<T>(filename);
+            return ((IDataSaver)Unprotected).GetVersion<T>(filename);
         }
     }
 
