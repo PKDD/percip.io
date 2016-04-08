@@ -15,30 +15,23 @@ namespace percip.io
             {
                 try
                 {
-                    TimeStampCollection col = ToRepair.Load<TimeStampCollection>(filename);
+                    string version = ToRepair.GetVersion<TimeStampCollection>(filename);
                 }
-                catch (Exception)
+                catch
                 {
                     try
                     {
-                        ToRepair.GetVersion<TimeStampCollection>(filename);
+                        percip.io_1_0_4.TimeStampCollection col_1_0_4 = ToRepair.Load<percip.io_1_0_4.TimeStampCollection>(filename);
+                        TimeStampCollection col = TimeStampCollection.Convert(col_1_0_4);
+                        ToRepair.Save(filename, col);
                     }
                     catch
                     {
-                        try
-                        {
-                            percip.io_1_0_4.TimeStampCollection col_1_0_4 = ToRepair.Load<percip.io_1_0_4.TimeStampCollection>(filename);
-                            TimeStampCollection col = TimeStampCollection.Convert(col_1_0_4);
-                            ToRepair.Save(filename, col);
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Failed to Convert Data!");
-                            Environment.Exit(-2);
-                        }
+                        Console.WriteLine("Failed to Convert Data!");
+                        Environment.Exit(-2);
                     }
                 }
-            }
+             }
         }
     }
 }
