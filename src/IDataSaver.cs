@@ -15,7 +15,7 @@ namespace percip.io
         /// <param name="filename">Property for objects location.</param>
         /// <param name="obj">The object.</param>
         void Save<T>(string filename, T obj);
-        void GetVersion<T>(string filename);
+        string GetVersion<T>(string filename);
 
         /// <summary>
         /// Loading an object.
